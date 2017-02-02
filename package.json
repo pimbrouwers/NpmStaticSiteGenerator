@@ -11,26 +11,22 @@
         "requirejs-text": "latest"
     },
     "devDependencies": {
+        "handlebars": "latest",
         "less": "latest",
         "less-watch-compiler": "latest",
         "ncp": "latest",
         "rimraf": "latest"
     },
     "scripts": {
-        "clean": "rimraf www_dist/* www_src/lib/*",
+        "clean": "rimraf www_dist/*",
+
+        "devlib:requirejs": "mkdir www_src/lib && ncp node_modules/requirejs/require.js www_src/lib/require.js",
         
-        "lib:requirejs": "ncp node_modules/requirejs/require.js www_src/lib/require.js",
-        "lib:rjs": "ncp node_modules/requirejs/bin/r.js www_src/lib/r.js",
-        "lib:jquery": "ncp node_modules/jquery/dist/jquery.min.js www_src/lib/jquery.js",
-        "lib:knockout": "ncp node_modules/knockout/build/output/knockout-latest.js www_src/lib/knockout.js",
-        "lib:text": "ncp node_modules/requirejs-text/text.js www_src/lib/text.js",
-        "lib:js": "npm run lib:requirejs & npm run lib:rjs & npm run lib:jquery & npm run lib:knockout & npm run lib:text",
+        "watch:less": "less-watch-compiler www_src/less www_src/css/app.css",
 
-        "watch:less": "less-watch-compiler www_src/less www_src/css",
+        "build:js": "node node_modules/requirejs/bin/r.js -o www_src/js/require.build.js",
+        "build:less": "lessc www_src/less/app.less www_dist/css/app.css",
 
-        "build:js": "node www_src/lib/r.js -o www_src/js/require.build.js",
-        "build:less": "lessc www_src/less/app.less www_dist/app.css",
-
-        "build": "npm run clean && npm run lib:js && npm run build:js & npm run build:less"
+        "build": "npm run clean && npm run devlib:js && npm run build:js & npm run build:less"
     }
 }
