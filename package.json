@@ -1,0 +1,36 @@
+{
+    "name": "npm-static-site-generator",
+    "version": "0.0.1",
+    "description": "NPM Static Site Generator",
+    "author": "Pim Brouwers",
+    "license": "MIT",
+    "dependencies": {
+        "jquery": "2.2.0",
+        "knockout": "3.4.1",
+        "requirejs":"latest",
+        "requirejs-text": "latest"
+    },
+    "devDependencies": {
+        "less": "latest",
+        "less-watch-compiler": "latest",
+        "ncp": "latest",
+        "rimraf": "latest"
+    },
+    "scripts": {
+        "clean": "rimraf www_dist/* www_src/lib/*",
+        
+        "lib:requirejs": "ncp node_modules/requirejs/require.js www_src/lib/require.js",
+        "lib:rjs": "ncp node_modules/requirejs/bin/r.js www_src/lib/r.js",
+        "lib:jquery": "ncp node_modules/jquery/dist/jquery.min.js www_src/lib/jquery.js",
+        "lib:knockout": "ncp node_modules/knockout/build/output/knockout-latest.js www_src/lib/knockout.js",
+        "lib:text": "ncp node_modules/requirejs-text/text.js www_src/lib/text.js",
+        "lib:js": "npm run lib:requirejs & npm run lib:rjs & npm run lib:jquery & npm run lib:knockout & npm run lib:text",
+
+        "watch:less": "less-watch-compiler www_src/less www_src/css",
+
+        "build:js": "node www_src/lib/r.js -o www_src/js/require.build.js",
+        "build:less": "lessc www_src/less/app.less www_dist/app.css",
+
+        "build": "npm run clean && npm run lib:js && npm run build:js & npm run build:less"
+    }
+}

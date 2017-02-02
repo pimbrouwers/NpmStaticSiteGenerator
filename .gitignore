@@ -1,0 +1,14 @@
+.DS_Store
+*.log
+node_modules
+*.node
+components
+coverage
+*.orig
+.idea
+sandbox
+test/out-fixtures/*
+test/watch-*.txt
+gulp.1
+www_src/lib/*
+www_dist/*
