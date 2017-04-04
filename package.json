@@ -20,13 +20,15 @@
     "scripts": {
         "clean": "rimraf www_dist/*",
 
-        "devlib:requirejs": "mkdir www_src/lib && ncp node_modules/requirejs/require.js www_src/lib/require.js",
+        "devlib:js": "ncp node_modules/requirejs/require.js www_src/require.js && ncp node_modules/knockout/build/output/knockout-latest.js www_src/knockout.js && ncp node_modules/jquery/dist/jquery.min.js www_src/jquery.js",
         
-        "watch:less": "less-watch-compiler www_src/less www_src/css/app.css",
+        "watch:less": "less-watch-compiler www_src/less www_src/css",
+        "build:less": "lessc www_src/less/app.less www_dist/css/app.css",       
 
         "build:js": "node node_modules/requirejs/bin/r.js -o www_src/js/require.build.js",
-        "build:less": "lessc www_src/less/app.less www_dist/css/app.css",
+        
+        "build:pages": "node tools/build-pages.js",
 
-        "build": "npm run clean && npm run devlib:js && npm run build:js & npm run build:less"
+        "build": "npm run clean && npm run build:pages & npm run build:js & npm run build:less"
     }
 }
