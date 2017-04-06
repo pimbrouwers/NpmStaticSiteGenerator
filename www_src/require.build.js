@@ -1,7 +1,10 @@
 ({
-    baseUrl: ".",
+	include: ['requireLib'],
     mainConfigFile: "require.build.js",
     name: "startup",
     out: "../www_dist/scripts.js",
-    paths: {}
+    paths: {
+    	requireLib: 'require',
+    },
+    preserveLicenseComments: false,
 })

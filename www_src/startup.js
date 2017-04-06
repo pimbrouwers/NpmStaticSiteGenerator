@@ -1,11 +1,10 @@
-define(['jquery', 'knockout'], function($, ko){
-    //custom bindings
-    ko.bindingHandlers.bgSlider = {
-        init: function (element) {
-            console.log(element);
-        }
-    };
-    
+require.config({});
 
-    ko.applyBindings({});
+var App = null;
+
+require(['jquery', 'knockout', 'js/app', 'js/dom-bindings'], function($, ko, AppModel, DomBindings){
+    App = new AppModel();
+    App.Initalize();
+    
+    DomBindings.Register();    
 });

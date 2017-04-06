@@ -14,21 +14,24 @@
         "handlebars": "latest",
         "less": "latest",
         "less-watch-compiler": "latest",
+        "less-plugin-clean-css": "latest",
         "ncp": "latest",
         "rimraf": "latest"
     },
     "scripts": {
         "clean": "rimraf www_dist/*",
 
-        "devlib:js": "ncp node_modules/requirejs/require.js www_src/require.js && ncp node_modules/knockout/build/output/knockout-latest.js www_src/knockout.js && ncp node_modules/jquery/dist/jquery.min.js www_src/jquery.js",
+        "copy:img": "ncp www_src/img www_dist/img",
         
-        "watch:less": "less-watch-compiler www_src/less www_src/css",
-        "build:less": "lessc www_src/less/app.less www_dist/css/app.css",       
-
-        "build:js": "node node_modules/requirejs/bin/r.js -o www_src/js/require.build.js",
+        "devlib:js": "ncp node_modules/requirejs/require.js www_src/require.js & ncp node_modules/requirejs/bin/r.js www_src/r.js & ncp node_modules/knockout/build/output/knockout-latest.js www_src/knockout.js & ncp node_modules/jquery/dist/jquery.min.js www_src/jquery.js",
+        "build:js": "node www_src/r.js -o www_src/require.build.js",
+        
+        "watch:less": "less-watch-compiler www_src/less www_dist/css",
+        "build:less": "lessc --clean-css www_src/less/app.less www_dist/app.css",       
         
         "build:pages": "node tools/build-pages.js",
 
-        "build": "npm run clean && npm run build:pages & npm run build:js & npm run build:less"
+        "build": "npm run copy:img & npm run build:pages & npm run build:js & npm run build:less",
+        "compile": "npm run clean && npm run build"
     }
 }
