@@ -1,38 +1,14 @@
-var hbs = require('handlebars'),
+var hbsConfig = require('../tools/tasks/configure-hbs'),
+    hbs = require('handlebars'),    
     fs = require('fs');
 
+//setup handlebars
+hbsConfig.RegisterHelpers();
+hbsConfig.RegisterPartials();
+
 //config
-var pagesDir = __dirname + '/../www_src/pages',
-    hbsPartialsDir = __dirname + '/../www_src/pages/partials',
+var pagesDir = __dirname + '/../www_src/pages',    
     compiledPagesDir = __dirname + "/../www_dist/";
-
-//register helpers
-hbs.registerHelper('if_eq', function(a, b, opts) {
-    if(a == b) // Or === depending on your needs
-        return opts.fn(this);
-    else
-        return opts.inverse(this);
-});
-
-hbs.registerHelper('json', function(context) {
-    return JSON.stringify(context);
-});
-
-//register partials
-fs.readdirSync(hbsPartialsDir).forEach(function (filename) {
-  var matches = /^([^.]+).hbs$/.exec(filename);
-  if (!matches) {
-    return;
-  }
-
-  var name = matches[1],
-      hbsPartialFilename = hbsPartialsDir + '/' + filename,
-      template = fs.readFileSync(hbsPartialFilename, 'utf8');
-  
-  hbs.registerPartial(name, template);
-
-  console.log(name + " hbs partial was registered!");
-});
 
 //compile pages
 fs.readdirSync(pagesDir).forEach(function (filename) {

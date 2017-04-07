@@ -15,6 +15,7 @@
         "less": "latest",
         "less-watch-compiler": "latest",
         "less-plugin-clean-css": "latest",
+        "markdown-parse": "latest",
         "ncp": "latest",
         "rimraf": "latest"
     },
@@ -31,7 +32,10 @@
         
         "build:pages": "node tools/build-pages.js",
 
-        "build": "npm run copy:img & npm run build:pages & npm run build:js & npm run build:less",
+        "build:posts": "node tools/build-posts.js",
+
+        "build": "npm run copy:img & npm run build:pages & npm run build:posts & npm run build:js & npm run build:less",
+        
         "compile": "npm run clean && npm run build"
     }
 }
