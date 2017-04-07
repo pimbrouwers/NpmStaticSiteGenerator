@@ -1,6 +1,6 @@
 var hbs = require('handlebars'),
     fs = require('fs'),
-    hbsPartialsDir = __dirname + '/../../www_src/pages/partials';
+    hbsPartialsDir = __dirname + '/../../www_src/partials';
 
 var hbsConfig = function(){};
 

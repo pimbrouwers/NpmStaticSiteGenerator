@@ -1,11 +1,11 @@
-var hbsConfig = require('../tools/tasks/configure-hbs'),
+var hbsPrepare = require('../scripts/tasks/prepare-hbs'),
     fs = require('fs'),
     hbs = require('handlebars'),
     parser = require('markdown-parse');
 
 //setup handlebars
-hbsConfig.RegisterHelpers();
-hbsConfig.RegisterPartials();
+hbsPrepare.RegisterHelpers();
+hbsPrepare.RegisterPartials();
 
 //config
 var postsDir = __dirname + '/../www_src/posts/content',

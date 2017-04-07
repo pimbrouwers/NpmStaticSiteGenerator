@@ -19,20 +19,23 @@
         "ncp": "latest",
         "rimraf": "latest"
     },
-    "scripts": {
-        "clean": "rimraf www_dist/*",
+    "scripts": {        
+        "clean": "rimraf ../www_dist/*",
+        "clobber": "rimraf ../www_dist ../www_src",
+
+        "init": "npm install && node scripts/install.js && npm run devlib:js",
 
         "copy:img": "ncp www_src/img www_dist/img",
         
-        "devlib:js": "ncp node_modules/requirejs/require.js www_src/require.js & ncp node_modules/requirejs/bin/r.js www_src/r.js & ncp node_modules/knockout/build/output/knockout-latest.js www_src/knockout.js & ncp node_modules/jquery/dist/jquery.min.js www_src/jquery.js",
+        "devlib:js": "ncp node_modules/requirejs/require.js ../www_src/require.js & ncp node_modules/requirejs/bin/r.js ../www_src/r.js & ncp node_modules/knockout/build/output/knockout-latest.js ../www_src/knockout.js & ncp node_modules/jquery/dist/jquery.min.js ../www_src/jquery.js",
         "build:js": "node www_src/r.js -o www_src/require.build.js",
         
         "watch:less": "less-watch-compiler www_src/less www_dist/css",
         "build:less": "lessc --clean-css www_src/less/app.less www_dist/app.css",       
         
-        "build:pages": "node tools/build-pages.js",
+        "build:pages": "node scripts/build-pages.js",
 
-        "build:posts": "node tools/build-posts.js",
+        "build:posts": "node scripts/build-posts.js",
 
         "build": "npm run copy:img & npm run build:pages & npm run build:posts & npm run build:js & npm run build:less",
         

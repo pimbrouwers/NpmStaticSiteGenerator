@@ -1,10 +1,10 @@
-var hbsConfig = require('../tools/tasks/configure-hbs'),
+var hbsPrepare = require('../scripts/tasks/prepare-hbs'),
     hbs = require('handlebars'),    
     fs = require('fs');
 
 //setup handlebars
-hbsConfig.RegisterHelpers();
-hbsConfig.RegisterPartials();
+hbsPrepare.RegisterHelpers();
+hbsPrepare.RegisterPartials();
 
 //config
 var pagesDir = __dirname + '/../www_src/pages',    
