@@ -8,25 +8,29 @@ hbsPrepare.RegisterHelpers();
 hbsPrepare.RegisterPartials();
 
 //config
-var postsDir = __dirname + '/../../www_src/posts/content',
+var postsDir = __dirname + '/../../www_src/posts/',
+    postsContentDir = postsDir + 'content/',
     compiledPostsDir = __dirname + "/../../www_dist/posts/",
     parsedPostsAry = [];
 
-//compile posts
-fs.readdirSync(postsDir).forEach(function(filename) {
-    var matches = /^([^.]+).md$/.exec(filename);
-    if (!matches) {
-        return;
-    }
+if (fs.existsSync(postsDir)) {
+    //compile posts
+    fs.readdirSync(postsContentDir).forEach(function(filename) {
+        var matches = /^([^.]+).md$/.exec(filename);
+        if (!matches) {
+            return;
+        }
 
-    var postName = matches[1],
-        post = fs.readFileSync(postsDir + '/' + filename, 'utf8'),
-        compiledPostDirname = compiledPostsDir + postName,
-        compiledPostFilename = compiledPostDirname + "/index.html";
+        var postName = matches[1],
+            post = fs.readFileSync(postsContentDir + '/' + filename, 'utf8'),
+            compiledPostDirname = compiledPostsDir + postName,
+            compiledPostFilename = compiledPostDirname + "/index.html";
 
-    parser(post, function(err, result){
-        parsedPostsAry.push(result);
+        parser(post, function(err, result) {
+            parsedPostsAry.push(result);
+        });
     });
-});
 
-console.log(parsedPostsAry);
+    console.log(parsedPostsAry);
+}
+
