@@ -27,7 +27,7 @@
 
         "copy:img": "ncp ../www_src/img ../www_dist/img",
         
-        "devlib:js": "ncp node_modules/requirejs/require.js ../www_src/require.js & ncp node_modules/requirejs/bin/r.js ../www_src/r.js & ncp node_modules/knockout/build/output/knockout-latest.js ../www_src/knockout.js & ncp node_modules/jquery/dist/jquery.min.js ../www_src/jquery.js",
+        "devlib:js": "ncp node_modules/requirejs/require.js ../www_src/require.js & ncp node_modules/requirejs/bin/r.js ../www_src/r.js & ncp node_modules/knockout/build/output/knockout-latest.js ../www_src/knockout.js & ncp node_modules/jquery/dist/jquery.min.js ../www_src/jquery.js & ncp node_modules/requirejs-text/text.js ../www_src/text.js",
         "build:js": "node ../www_src/r.js -o ../www_src/require.build.js",
         
         "watch:less": "less-watch-compiler ../www_src/less ../www_dist/css",
