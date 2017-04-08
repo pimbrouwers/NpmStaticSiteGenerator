@@ -4,7 +4,7 @@ var App = null;
 
 require(['jquery', 'knockout', 'js/app', 'js/dom-bindings'], function($, ko, AppModel, DomBindings){
     App = new AppModel();
-    App.Initalize();
+    App.Initialize();
     
     DomBindings.Register();    
 });
