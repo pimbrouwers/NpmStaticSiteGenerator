@@ -7,8 +7,8 @@ hbsPrepare.RegisterHelpers();
 hbsPrepare.RegisterPartials();
 
 //config
-var pagesDir = __dirname + '/../www_src/pages',    
-    compiledPagesDir = __dirname + "/../www_dist/";
+var pagesDir = __dirname + '/../../www_src/pages',    
+    compiledPagesDir = __dirname + "/../../www_dist/";
 
 //compile pages
 fs.readdirSync(pagesDir).forEach(function (filename) {

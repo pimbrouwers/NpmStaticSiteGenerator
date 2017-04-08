@@ -8,8 +8,8 @@ hbsPrepare.RegisterHelpers();
 hbsPrepare.RegisterPartials();
 
 //config
-var postsDir = __dirname + '/../www_src/posts/content',
-    compiledPostsDir = __dirname + "/../www_dist/posts/",
+var postsDir = __dirname + '/../../www_src/posts/content',
+    compiledPostsDir = __dirname + "/../../www_dist/posts/",
     parsedPostsAry = [];
 
 //compile posts

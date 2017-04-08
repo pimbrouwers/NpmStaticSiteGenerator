@@ -22,5 +22,5 @@ ncp(installDir, srcDir, function(err) {
         return console.error(err);
     }
 
-    console.log('www_src installed!');
+    console.log('www_src & www_dist installed!');
 });
