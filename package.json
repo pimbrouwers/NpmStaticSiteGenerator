@@ -1,10 +1,11 @@
 {
     "name": "npm-static-site-generator",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "NPM Static Site Generator",
     "author": "Pim Brouwers",
     "license": "MIT",
     "dependencies": {
+        "http-server": "latest",
         "jquery": "2.2.0",
         "knockout": "3.4.1",
         "requirejs":"latest",
@@ -36,8 +37,9 @@
         "build:pages": "node scripts/build-pages.js",
         "build:posts": "node scripts/build-posts.js",
         
-        "develop": "watch 'npm run build:js & npm run build:pages & npm run build:less & npm run copy:img' ../www_src/",
+        "develop": "http-server ../www_dist/ & watch --wait=1 'npm run copy:img & npm run build:js & npm run build:pages & npm run build:less' ../www_src/",
 
-        "compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build & npm run build:pages & npm run build:posts & npm run build:less" 
+        "compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:posts & npm run build:less" 
     }
 }
+
