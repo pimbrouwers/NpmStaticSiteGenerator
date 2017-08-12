@@ -18,10 +18,10 @@ You're now left with a `www_src` dir, which houses your website code. And a `www
 ## Develop
 When you're ready to deploy your code, simply run: `npm run --prefix tools compile` to populate your `www_dist` directory in response to any changes made in the `www_src` directory.
 
+> It is recommended to use the npm package `http-server` (`npm i -g http-server`) to view the result via `http-server www_dist/`
+
 ## Compile
 When you're ready to deploy your code, simply run: `npm run --prefix tools compile` to populate your `www_dist` directory. 
-
-> It is recommended to use the built-in node web server to view the result via `http-server www_dist/`
 
 ## API
 ```
