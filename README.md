@@ -16,9 +16,7 @@ Install generator as **git submodule**:
 You're now left with a `www_src` dir, which houses your website code. And a `www_dist` dir which houses your deployable code.
 
 ## Develop
-When you're ready to begin development, simply run: `npm run --prefix tools develop`. This launches `watch` which will recompile the `www_dist` directory in response to any changes made in the `www_src` directory.
-
-> It is recommended to use the npm package `http-server` (`npm i -g http-server`) to view the result via `http-server www_dist/`
+When you're ready to begin development, simply run: `npm run --prefix tools develop`. This launches `watch` which will recompile the `www_dist` directory in response to any changes made in the `www_src` directory. It will also spin up an instance of `http-server` to make the compiled results viewable @ `127.0.0.1:8080`.
 
 ## Compile
 When you're ready to deploy your code, simply run: `npm run --prefix tools compile` to populate your `www_dist` directory. 
@@ -41,9 +39,9 @@ When you're ready to deploy your code, simply run: `npm run --prefix tools compi
 "build:pages": "node scripts/build-pages.js",
 "build:posts": "node scripts/build-posts.js",
 
-"develop": "watch 'npm run build:js & npm run build:pages & npm run build:less & npm run copy:img' ../www_src/",
+"develop": "http-server ../www_dist/ & watch --wait=1 'npm run copy:img & npm run build:js & npm run build:pages & npm run build:less' ../www_src/",
 
-"compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build & npm run build:pages & npm run build:posts & npm run build:less" 
+"compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:posts & npm run build:less" 
 ```
 
 Built with ♥ by [Pim Brouwers](https://github.com/pimbrouwers) in Toronto, ON. Licensed under [MIT](https://github.com/pimbrouwers/NpmStaticSiteGenerator/blob/master/LICENSE).
