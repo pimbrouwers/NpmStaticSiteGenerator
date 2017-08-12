@@ -8,9 +8,7 @@ define(['knockout'], function(ko){
 
 	ko.utils.extend(AppModel.prototype, {
 		Initialize: function(){
-			//app startup code
-			var self = this;
-            ko.applyBindings(self);  
+			//app startup code			
 		}
 	});
 	
