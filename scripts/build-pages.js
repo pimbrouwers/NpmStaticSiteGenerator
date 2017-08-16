@@ -4,13 +4,11 @@ var hbsPrepare = require('../scripts/tasks/prepare-hbs'),
     path = require('path');
 
 
-function BuildPage(dir, file) {
+function BuildPage(siteData, file) {  
+  var compiledFilename = path.resolve(file.compiledDirname, "index.html"),
+      hbsPageFilename = path.resolve(file.pagesDir, file.fileNameNoExt + '.hbs'),
+      pageJsonFilename = path.resolve(file.pagesDir, file.fileNameNoExt + '.json');
   
-  var compiledDirname = (file.fileNameNoExt != "index") ? file.compiledDir + file.fileNameNoExt : file.compiledDir,
-      compiledFilename = path.resolve(compiledDirname, "index.html"),
-      hbsPageFilename = path.resolve(dir, file.fileNameNoExt + '.hbs'),
-      pageJsonFilename = path.resolve(dir, file.fileNameNoExt + '.json');
-      
   //read page
   var page = fs.readFileSync(hbsPageFilename, 'utf8');
       pageTemplate = hbs.compile(page),
@@ -23,42 +21,40 @@ function BuildPage(dir, file) {
     if(typeof pageJson != 'undefined' && pageJson != null) {
       //parse json into context object
       pageContext = JSON.parse(pageJson);
+      console.log(pageContext);
     }
   }
 
+  pageContext.siteData = siteData;
+
   //add pageName to context
   pageContext.pageName = file.fileNameNoExt;
-
-  //does this output dir exist?
-  if (!fs.existsSync(compiledDirname)) {
-    fs.mkdirSync(compiledDirname);
-  }
-
+  
   //write page to disk
   fs.writeFileSync(compiledFilename, pageTemplate(pageContext));
   console.log(compiledFilename + " was saved!");
 };
 
-function BuildPages(dir, files, builder){
+function BuildPages(siteData, files, builder){
   var todo = files.concat();
 
   setTimeout(function() {
-      builder(dir, todo.shift());
+      builder(siteData, todo.shift());
       if(todo.length > 0) {
           setTimeout(arguments.callee, 25);
       }
   }, 25);
 }
 
-function DiscoverPages(dir, compiledDir, files){
-  var filenames = fs.readdirSync(dir),
+function DiscoverPages(pagesDir, compiledDir, files){
+  var filenames = fs.readdirSync(pagesDir),
       files = files || [];
   
   filenames.forEach(function(filename){
-    var filenameResolved = path.resolve(dir, filename);
+    var filenameResolved = path.resolve(pagesDir, filename);
 
     if(fs.statSync(filenameResolved).isDirectory()){
-      files = DiscoverPages(filenameResolved, path.resolve(compiledDir, filename), files);
+      files = DiscoverPages(filenameResolved, path.resolve(compiledDir,  filename), files);
     }
     else {
       //is this is a handlebars file?
@@ -68,15 +64,23 @@ function DiscoverPages(dir, compiledDir, files){
       }
       
       //we have a file, add to array
-      var fileNameNoExt = matches[1];
+      var fileNameNoExt = matches[1],
+          compiledDirname = (fileNameNoExt != "index") ? path.resolve(compiledDir, fileNameNoExt) : compiledDir;
+      // does this output dir exist?
+      if (!fs.existsSync(compiledDir)) {
+        fs.mkdirSync(compiledDir);
+      }
+
+      if (!fs.existsSync(compiledDirname)) {
+        fs.mkdirSync(compiledDirname);
+      }
 
       files.push({
         fileNameNoExt: fileNameNoExt,
-        compiledDir: compiledDir
+        pagesDir: pagesDir,
+        compiledDirname: compiledDirname
       });
 
-      // BuildPage(dir, compiledDir, fileNameNoExt);
-      
     }
   });
 
@@ -93,4 +97,17 @@ const pagesDir = path.resolve(__dirname, '../../www_src/pages'),
 
 var pageFiles = DiscoverPages(pagesDir, compiledPagesDir);
 
-BuildPages(pagesDir, pageFiles, BuildPage);
+//do we have a site.json
+var siteJsonFilename = path.resolve(__dirname, '../../www_src/site.json'),
+    siteData = {};
+
+if(fs.existsSync(siteJsonFilename)) {
+  var siteJson = fs.readFileSync(siteJsonFilename, 'utf8');
+
+  if(typeof siteJson != 'undefined' && siteJson != null) {
+    //parse json into context object
+    siteData = JSON.parse(siteJson);
+  }
+}
+
+BuildPages(siteData, pageFiles, BuildPage);
