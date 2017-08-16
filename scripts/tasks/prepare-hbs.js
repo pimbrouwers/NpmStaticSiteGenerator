@@ -6,11 +6,32 @@ var hbsConfig = function(){};
 
 hbsConfig.prototype.RegisterHelpers = function() {
   //register helpers
-  hbs.registerHelper('if_eq', function(a, b, opts) {
-      if(a == b) // Or === depending on your needs
-          return opts.fn(this);
-      else
-          return opts.inverse(this);
+  hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
+
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+            return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
   });
 
   hbs.registerHelper('json', function(context) {
@@ -31,8 +52,6 @@ hbsConfig.prototype.RegisterPartials = function() {
         template = fs.readFileSync(hbsPartialFilename, 'utf8');
     
     hbs.registerPartial(name, template);
-
-    console.log(name + " hbs partial was registered!");
   });  
 };
 

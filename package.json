@@ -1,6 +1,6 @@
 {
     "name": "npm-static-site-generator",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "description": "NPM Static Site Generator",
     "author": "Pim Brouwers",
     "license": "MIT",
@@ -15,7 +15,6 @@
         "handlebars": "latest",
         "less": "latest",
         "less-plugin-clean-css": "latest",
-        "markdown-parse": "latest",
         "ncp": "latest",
         "rimraf": "latest",
         "watch": "latest"
@@ -35,11 +34,10 @@
         "build:less": "lessc --clean-css ../www_src/less/app.less ../www_dist/app.css",       
         
         "build:pages": "node scripts/build-pages.js",
-        "build:posts": "node scripts/build-posts.js",
         
         "develop": "http-server ../www_dist/ & watch --wait=1 'npm run copy:img & npm run build:js & npm run build:pages & npm run build:less' ../www_src/",
 
-        "compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:posts & npm run build:less" 
+        "compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:less" 
     }
 }
 

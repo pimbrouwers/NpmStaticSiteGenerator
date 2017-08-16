@@ -1,27 +1,18 @@
 var hbsPrepare = require('../scripts/tasks/prepare-hbs'),
     hbs = require('handlebars'),    
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
-//setup handlebars
-hbsPrepare.RegisterHelpers();
-hbsPrepare.RegisterPartials();
 
-//config
-var pagesDir = __dirname + '/../../www_src/pages',    
-    compiledPagesDir = __dirname + "/../../www_dist/";
-
-//compile pages
-fs.readdirSync(pagesDir).forEach(function (filename) {
-  var matches = /^([^.]+).hbs$/.exec(filename);
-  if (!matches) {
-    return;
-  }
-
-  var pageName = matches[1],
-      page = fs.readFileSync(pagesDir + '/' + filename, 'utf8'),
-      compiledPageDirname = (pageName != "index") ? compiledPagesDir + pageName : compiledPagesDir,
-      compiledPageFilename = compiledPageDirname + "/index.html",
-      pageJsonFilename = pagesDir + '/' + pageName + '.json',
+function BuildPage(dir, file) {
+  
+  var compiledDirname = (file.fileNameNoExt != "index") ? file.compiledDir + file.fileNameNoExt : file.compiledDir,
+      compiledFilename = path.resolve(compiledDirname, "index.html"),
+      hbsPageFilename = path.resolve(dir, file.fileNameNoExt + '.hbs'),
+      pageJsonFilename = path.resolve(dir, file.fileNameNoExt + '.json');
+      
+  //read page
+  var page = fs.readFileSync(hbsPageFilename, 'utf8');
       pageTemplate = hbs.compile(page),
       pageContext = {};
 
@@ -36,13 +27,70 @@ fs.readdirSync(pagesDir).forEach(function (filename) {
   }
 
   //add pageName to context
-  pageContext.pageName = pageName;
+  pageContext.pageName = file.fileNameNoExt;
 
-  if (!fs.existsSync(compiledPageDirname)) {
-    fs.mkdirSync(compiledPageDirname);
+  //does this output dir exist?
+  if (!fs.existsSync(compiledDirname)) {
+    fs.mkdirSync(compiledDirname);
   }
 
-  fs.writeFileSync(compiledPageFilename, pageTemplate(pageContext));
-  console.log(pageName + "/index.html was saved!");
+  //write page to disk
+  fs.writeFileSync(compiledFilename, pageTemplate(pageContext));
+  console.log(compiledFilename + " was saved!");
+};
 
-});
+function BuildPages(dir, files, builder){
+  var todo = files.concat();
+
+  setTimeout(function() {
+      builder(dir, todo.shift());
+      if(todo.length > 0) {
+          setTimeout(arguments.callee, 25);
+      }
+  }, 25);
+}
+
+function DiscoverPages(dir, compiledDir, files){
+  var filenames = fs.readdirSync(dir),
+      files = files || [];
+  
+  filenames.forEach(function(filename){
+    var filenameResolved = path.resolve(dir, filename);
+
+    if(fs.statSync(filenameResolved).isDirectory()){
+      files = DiscoverPages(filenameResolved, path.resolve(compiledDir, filename), files);
+    }
+    else {
+      //is this is a handlebars file?
+      var matches = /^([^.]+).hbs$/.exec(filename);
+      if (!matches) {
+        return;
+      }
+      
+      //we have a file, add to array
+      var fileNameNoExt = matches[1];
+
+      files.push({
+        fileNameNoExt: fileNameNoExt,
+        compiledDir: compiledDir
+      });
+
+      // BuildPage(dir, compiledDir, fileNameNoExt);
+      
+    }
+  });
+
+  return files;
+}; 
+
+//setup handlebars
+hbsPrepare.RegisterHelpers();
+hbsPrepare.RegisterPartials();
+
+// //compile pages
+const pagesDir = path.resolve(__dirname, '../../www_src/pages'),
+      compiledPagesDir = path.resolve(__dirname, '../../www_dist');
+
+var pageFiles = DiscoverPages(pagesDir, compiledPagesDir);
+
+BuildPages(pagesDir, pageFiles, BuildPage);

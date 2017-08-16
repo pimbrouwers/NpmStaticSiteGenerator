@@ -37,11 +37,10 @@ When you're ready to deploy your code, simply run: `npm run --prefix tools compi
 "build:less": "lessc --clean-css ../www_src/less/app.less ../www_dist/app.css",       
 
 "build:pages": "node scripts/build-pages.js",
-"build:posts": "node scripts/build-posts.js",
 
 "develop": "http-server ../www_dist/ & watch --wait=1 'npm run copy:img & npm run build:js & npm run build:pages & npm run build:less' ../www_src/",
 
-"compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:posts & npm run build:less" 
+"compile": "npm run clean && npm run copy:img & npm run compile:js & npm run build:pages & npm run build:less" 
 ```
 
 Built with ♥ by [Pim Brouwers](https://github.com/pimbrouwers) in Toronto, ON. Licensed under [MIT](https://github.com/pimbrouwers/NpmStaticSiteGenerator/blob/master/LICENSE).
