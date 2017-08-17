@@ -7,7 +7,7 @@ var hbsPrepare = require('../scripts/tasks/prepare-hbs'),
 function BuildPage(siteData, file) {  
   var compiledFilename = path.resolve(file.compiledDirname, "index.html"),
       hbsPageFilename = path.resolve(file.pagesDir, file.fileNameNoExt + '.hbs'),
-      pageJsonFilename = path.resolve(file.pagesDir, file.fileNameNoExt + '.json');
+      pageJsonFilename = path.resolve(file.pagesDir.replace('/pages', '/pages-json'), file.fileNameNoExt + '.json');
   
   //read page
   var page = fs.readFileSync(hbsPageFilename, 'utf8');
@@ -21,7 +21,6 @@ function BuildPage(siteData, file) {
     if(typeof pageJson != 'undefined' && pageJson != null) {
       //parse json into context object
       pageContext = JSON.parse(pageJson);
-      console.log(pageContext);
     }
   }
 
