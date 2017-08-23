@@ -26,9 +26,6 @@ function BuildPage(siteData, file) {
 
   pageContext.siteData = siteData;
 
-  //add pageName to context
-  pageContext.pageName = file.fileNameNoExt;
-  
   //write page to disk
   fs.writeFileSync(compiledFilename, pageTemplate(pageContext));
   console.log(compiledFilename + " was saved!");
